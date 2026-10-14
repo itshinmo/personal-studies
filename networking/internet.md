@@ -71,7 +71,7 @@ So far so good. But what about connecting hundreds, thousands, billions of compu
 
 Connecting switches this way extends a single local network. Each switch has an extensive map of which connection to use for each MAC address in its local network. If you connected ten billion computers in this network, each switch would need to remember up to ten billion MAC addresses. Whenever the recipient's address is unknown (or it has been deleted due to inactivity), switches must broadcast the message to all computers on the local network. As the network grows, it becomes increasingly costly to keep track of individual devices and find unknown recipients.
 
-The key problem is that our addresses have no hierarchy and don't correspond to the network structure—it's like trying to figure out who to deliver mail to by comparing each person's fingerprint. To fix this problem, we divide computers into separate local networks and connect these networks using a device called a **router**. It uses a different kind of address, an IP address, which is a 4-number sequence like `142.250.190.78`. Unlike MAC addresses, which are "fingerprints", IP addresses are "street addresses" and are assigned when a computer connects to a network, identified in the IP address by a shared prefix. A **router** can therefore store forwarding instructions for a whole group of addresses (e.g., "forward to this **router** whenever the IP address starts with `142.250`") without learning the location of every individual computer in tha
+The key problem is that our addresses have no hierarchy and don't correspond to the network structure—it's like trying to figure out who to deliver mail to by comparing each person's fingerprint. To fix this problem, we divide computers into separate local networks and connect these networks using a device called a **router**. It uses a different kind of address, an IP address, which is a 4-number sequence like `142.250.190.78`. Unlike MAC addresses, which are "fingerprints", IP addresses are "street addresses" and are assigned when a computer connects to a network, identified in the IP address by a shared prefix. A **router** can therefore store forwarding instructions for a whole group of addresses (e.g., "forward to this **router** whenever the IP address starts with `142.250`") without learning the location of every individual computer in that network.
 
 Such a network comes very close to what we call the Internet. We just need the physical medium (cables) to connect all these routers. Luckily, such an infrastructure already existed prior to the Internet, and that's the telephone network. To connect our network to the telephone infrastructure, we need a special piece of equipment called a **modem**. This **modem** turns the information from our network into information manageable by the telephone infrastructure and vice versa.
 
@@ -208,7 +208,7 @@ To find out whether a given domain name is available:
 - Alternatively, if you use a system with a built-in shell, type a `whois` command into it, as shown here for `smartfarmaqua.ir`:
 
 ```bash
-whois mozilla.org
+whois smartfarmaqua.ir
 ```
 
 ```
