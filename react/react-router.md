@@ -1008,3 +1008,11 @@ export default {
 ```
 
 Pre-rendering is a build-time operation that generates static HTML and client navigation data payloads for a list of URLs. This is useful for SEO and performance, especially for deployments without server rendering. When pre-rendering, route module loaders are used to fetch data at build time.
+
+# Notes
+
+## Route Module Function Call Order
+
+1. **Middleware:** Based on `middleware` array insert order
+2. **Loader**
+3. **Component**
