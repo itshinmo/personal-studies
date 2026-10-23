@@ -5,6 +5,12 @@
 * * [Types of Artifacts](#types-of-artifacts)
 * [What a spec is](#what-a-spec-is)
 * [What a slice is](#what-a-slice-is)
+* [Questions](#questions)
+* * [Sub Agents VS Main Agents](#sub-agents-vs-main-agents)
+* * * [Why sub agents exist](#why-sub-agents-exist)
+* * * [Why the main agent did not use them](#why-the-main-agent-did-not-use-them)
+* * * [What the sub agents are actually for](#what-the-sub-agents-are-actually-for)
+* * * [The important distinction](#the-important-distinction)
 
 ---
 
@@ -59,3 +65,52 @@ Your full vision is the roguelike loop: survive, earn points, defeat bosses, die
 
 Deliberately excluded: HUD, enemies, bosses, points, skill tree, timer, damage source, death, run/meta progression.
 It is the smallest piece you can actually playtest before adding combat and economy. It also proves the architecture: pure rules in src/game, browser input/loop in the feature, DOM rendering with transforms, and docs that match the code.
+
+# Questions
+
+These questions are the ones i asked my coding assistant when working on different projects, thats why some questions/answers are a bit vague!
+
+## Sub Agents VS Main Agents
+
+### Why sub agents exist
+
+“The main agent can do it” is not really the reason subagents exist. Subagents are less about capability and more about **separation of concerns, context isolation, permissions, and independent review.**
+
+### Why the main agent did not use them
+
+I worked end-to-end in the main session because the tasks were explicit, incremental, and tightly coupled: routing, layout, clipping, title, and settings were changing back and forth in one working tree. Handoffs would have added coordination overhead, and each subagent would have started with less context than this conversation had.
+
+That was a valid trade-off for velocity, but it underused the workflow. For the larger changes—the shared shell, settings schema migration, and glow feature—I should have used at least:
+
+- **designer** for the UI brief,
+- **implementer** for the approved implementation,
+- **reviewer** before the final commits,
+- **documenter** for the knowledge reconciliation.  
+
+I especially did not get the benefit of an independent review because I reviewed my own work.
+
+### What the sub agents are actually for
+
+- **Specialization:** each role has a narrower prompt and checklist. A designer focuses on hierarchy, states, tokens, and accessibility; an implementer focuses on the approved spec and tests; a reviewer looks for regressions without the author’s bias.
+- **Context isolation:** a subagent gets a fresh context. That keeps the main conversation manageable and lets it focus on one task.
+- **Independent review:** the reviewer is read-only and should not be the same voice that wrote the code. That catches things self-review misses.
+- **Approval gates:** the intended flow is design → brief → approval → implementation → review → documentation. A single agent doing all roles collapses those gates.
+- **Different tools or models:** a reviewer can be read-only; an implementer can edit; an explorer can search broadly; a game designer should not write production code.
+- **Parallelism:** independent work can run in separate worktrees/sessions without blocking the main thread.
+- **Consistency:** roles and skills encode repeatable process. They are useful precisely when a task is large enough that “just do it directly” starts to lose rigor.
+
+### The important distinction
+
+**A skill is instructions. An agent is a worker with a role and a fresh context. Loading `design-a-feature` gave me the UI checklist, but it did not give me the independent `designer` or `reviewer` perspective. That is why using a skill is not a substitute for using a subagent.
+
+They are not mandatory for every edit. For a small styling fix, direct work is reasonable. For a multi-file feature with persistence, routing, accessibility, and tests, they add real value.
+
+Going forward, a better default would be:
+
+- small fix → main agent directly
+- new UI → designer → implementer → reviewer
+- gameplay rule → game-designer → implementer → reviewer
+- knowledge/docs → documenter or knowledge-drift-sync
+- broad exploration → explore
+
+So the point of adding them is not that the main agent cannot type the code. It is that one agent should not be the only designer, implementer, reviewer, and documenter on a substantial change. In this session, I chose speed and continuity over that separation, and that is a legitimate thing to call out.
